@@ -1,28 +1,41 @@
-import { useState } from 'react'
+import { useState } from 'react';
+import Header from './components/Header';
+import ModelViewport from './components/ModelViewport';
+import PromptPanel from './components/PromptPanel';
+import ExportPanel from './components/ExportPanel';
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [lastGen, setLastGen] = useState(null);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 to-blue-50 flex items-center justify-center">
-      <div className="bg-white p-8 rounded-lg shadow-lg">
-        <h1 className="text-3xl font-bold text-gray-800 mb-4">
-          Vibe Coding Platform
-        </h1>
-        <p className="text-gray-600 mb-6">
-          Your AI-powered development environment
-        </p>
-        <div className="text-center">
-          <button
-            onClick={() => setCount(count + 1)}
-            className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded"
-          >
-            Count is {count}
-          </button>
+    <div className="min-h-screen bg-[#0B0B10] text-white">
+      <div className="fixed inset-0 pointer-events-none bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-indigo-500/10 via-transparent to-transparent" />
+
+      <Header />
+
+      <main className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8 grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="lg:col-span-2 space-y-4">
+          <ModelViewport />
+
+          {lastGen && (
+            <div className="rounded-xl border border-white/10 bg-white/5 p-4">
+              <p className="text-sm text-white/70">
+                Last request: "{lastGen.prompt}" · Model: <span className="text-white">{lastGen.model}</span>
+              </p>
+            </div>
+          )}
         </div>
-      </div>
+        <div className="space-y-4">
+          <PromptPanel onGenerate={(data) => setLastGen(data)} />
+          <ExportPanel />
+        </div>
+      </main>
+
+      <footer className="py-8 text-center text-white/50 text-sm">
+        Built for creators. Exports to OBJ, FBX, STL, GLTF/GLB, USD/USDZ.
+      </footer>
     </div>
-  )
+  );
 }
 
-export default App
+export default App;
